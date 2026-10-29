@@ -211,8 +211,9 @@ def validate(data: dict) -> dict:
     out_md = _require(data, "out_md", "out_md (연구노트 출력 파일명)")
     if not isinstance(out_md, str):
         _fail("out_md는 문자열이어야 합니다.")
-    out_html = _require(data, "out_html", "out_html (흐름도 출력 파일명)")
-    if not isinstance(out_html, str):
+    # out_html 은 선택 — 없으면 HTML 흐름도를 렌더하지 않는다(대회판: 연구노트 md 하나)
+    out_html = data.get("out_html")
+    if out_html is not None and not isinstance(out_html, str):
         _fail("out_html는 문자열입니다.")
 
     steps = data.get("steps")
@@ -425,35 +426,38 @@ def main():
     workdir = Path.cwd().resolve()
 
     out_md_name = data["out_md"]
-    out_html_name = data["out_html"]
+    out_html_name = data.get("out_html")
 
     out_md_path = (workdir / out_md_name).resolve()
-    out_html_path = (workdir / out_html_name).resolve()
+    out_html_path = (workdir / out_html_name).resolve() if out_html_name else None
 
     # 작업공간 밖으로 나가는 경로를 막기 위한 안전 확인
     if not is_subpath_of(out_md_path, workdir):
         _fail(f"out_md 경로가 작업공간 밖으로 나갑니다: {out_md_path}")
-    if not is_subpath_of(out_html_path, workdir):
+    if out_html_path is not None and not is_subpath_of(out_html_path, workdir):
         _fail(f"out_html 경로가 작업공간 밖으로 나갑니다: {out_html_path}")
 
     out_md_path.parent.mkdir(parents=True, exist_ok=True)
-    out_html_path.parent.mkdir(parents=True, exist_ok=True)
+    if out_html_path is not None:
+        out_html_path.parent.mkdir(parents=True, exist_ok=True)
 
     md_text = render_research_note(data)
     out_md_path.write_text(md_text, encoding="utf-8")
     md_bytes = out_md_path.stat().st_size
 
-    html_text = render_flow_html(data)
-    out_html_path.write_text(html_text, encoding="utf-8")
-    html_bytes = out_html_path.stat().st_size
+    if out_html_path is not None:
+        html_text = render_flow_html(data)
+        out_html_path.write_text(html_text, encoding="utf-8")
+        html_bytes = out_html_path.stat().st_size
 
     # 상대 경로(stdout에 찍을 용도)
     md_rel = out_md_path.relative_to(workdir).as_posix()
-    html_rel = out_html_path.relative_to(workdir).as_posix()
+    html_rel = out_html_path.relative_to(workdir).as_posix() if out_html_path is not None else None
 
     print(f"검색 호출 횟수: {data['search_calls']}")
     print(f"연구노트: ./{md_rel} — {md_bytes}바이트")
-    print(f"흐름도 설계도: ./{html_rel} — {html_bytes}바이트")
+    if html_rel:
+        print(f"흐름도 설계도: ./{html_rel} — {html_bytes}바이트")
 
 
 if __name__ == "__main__":

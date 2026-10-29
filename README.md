@@ -5,6 +5,7 @@
 > `sample-task/` 는 사전 체험용 견본 과제다 — 실제 과제 파일이 작업 공간에 없을 때만 이걸 과제로 쓴다. 작업 공간 루트에 `README.md` 가 없으면, 아래 「세팅」 2번의 `setup.sh` 를 돌리기 **전에** `cp -r probe-harness-test/sample-task/. .` 로 견본을 작업 공간 루트에 복사한다(setup.sh 가 클론 폴더를 지우므로 먼저 옮겨야 한다). 루트에 이미 과제 `README.md` 가 있으면 견본은 쓰지 않는다. 이 사본은 클론 폴더 이름이 `probe-harness-test/` 이므로 아래 명령의 `probe-harness/` 는 `probe-harness-test/` 로 읽는다.
 
 
+
 # probe-harness
 
 SK하이닉스 AI 해커톤 2026 **2차 예선**(2026-10-31 토, Cofa Probe 웹 IDE, 제공 Codex 만 사용) 응시자가 쓰는 작업 하네스.

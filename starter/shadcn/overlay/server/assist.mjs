@@ -4,7 +4,10 @@
 // 응답: {suggestion, source: 'openai'|'mock', model?, reason?}   reason(모의일 때만) = no-key | timeout | http-<코드> | network | empty
 export const DEFAULT_MODEL = 'gpt-4o-mini';
 export const TIMEOUT_MS = 8000;
-export const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
+// 주소 = env.OPENAI_BASE_URL(과제 환경이 주는 API 주소, 끝 / 정리; 없으면 OpenAI 기본) + 경로. 키·주소는 응답·로그에 싣지 않는다.
+const DEFAULT_BASE = 'https://api.openai.com/v1';
+const apiUrl = (env, path) => `${String(env.OPENAI_BASE_URL ?? '').trim().replace(/\/+$/, '') || DEFAULT_BASE}${path}`;
+export const OPENAI_URL = `${DEFAULT_BASE}/chat/completions`;
 const MAX_ANSWER = 4000, MAX_QUESTION = 500, MAX_TERMS = 20;
 const CODES = ['risk', 'safe', 'short'];
 
@@ -49,7 +52,7 @@ export function createAssist({ env = process.env, fetchImpl = globalThis.fetch, 
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), timeoutMs);
     try {
-      const res = await fetchImpl(OPENAI_URL, {
+      const res = await fetchImpl(apiUrl(env, '/chat/completions'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
         body: JSON.stringify({ model, messages: prompt(v), temperature: 0.2, max_tokens: 300 }),

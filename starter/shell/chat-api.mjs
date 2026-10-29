@@ -7,7 +7,10 @@
 // 응답: {reply, source:'openai'|'mock', mock:boolean, model?, reason?, refs?:[{doc,n}] (답에 쓴 근거)}   reason(모의일 때만) = no-key | timeout | http-<코드> | network | empty
 export const DEFAULT_MODEL = 'gpt-4o-mini';
 export const TIMEOUT_MS = 10000;
-export const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
+// 주소 = env.OPENAI_BASE_URL(과제 환경이 주는 API 주소, 끝 / 정리; 없으면 OpenAI 기본) + 경로. 키·주소는 응답·로그에 싣지 않는다.
+const DEFAULT_BASE = 'https://api.openai.com/v1';
+const apiUrl = (env, path) => `${String(env.OPENAI_BASE_URL ?? '').trim().replace(/\/+$/, '') || DEFAULT_BASE}${path}`;
+export const OPENAI_URL = `${DEFAULT_BASE}/chat/completions`;
 export const NO_BASIS = '이 화면 데이터에서 근거를 찾지 못해 모릅니다.';
 export const NO_DOC = '근거 문서에서 찾지 못했습니다.';
 const MAX_MESSAGES = 40, MAX_CONTENT = 2000, MAX_CONTEXT = 8000, MAX_PASSAGES = 5, MAX_DOC_NAME = 100, MAX_PASSAGE = 1000;
@@ -88,7 +91,7 @@ export function createChat({ env = process.env, fetchImpl = globalThis.fetch, ti
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), timeoutMs);
     try {
-      const res = await fetchImpl(OPENAI_URL, {
+      const res = await fetchImpl(apiUrl(env, '/chat/completions'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
         body: JSON.stringify({ model, messages: [{ role: 'system', content: systemPrompt(v) }, ...v.messages], temperature: 0.2, max_tokens: 400 }),

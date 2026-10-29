@@ -7,6 +7,13 @@
 # overlay/ = 우리 소스만(키트엔 node_modules 를 못 넣는다). 앱 루트 기준 경로로 들어 있고 그대로 복사된다.
 # 실측은 docs/prep/ 와 README 참고. 10분 안에 안 끝나면 멈추고 셸로 돌아간다. macOS 기본 bash 3.2 에서도 돈다.
 set -euo pipefail
+# Node 하한 = 20.19 — create-vite/vite 의 engines 가 ^20.19 || >=22.12 (shadcn CLI 는 >=20.18.1). F1 리허설: Node 18 에서 생성기가 실패했고 작업자가 대체 UI 를 새로 짰다 → 모자라면 시작 전에 멈추고 셸로 보낸다.
+NODE_V="$(node -v 2>/dev/null || true)"; NODE_V="${NODE_V#v}"
+NODE_MAJOR="${NODE_V%%.*}"; NODE_REST="${NODE_V#*.}"; NODE_MINOR="${NODE_REST%%.*}"
+case "$NODE_MAJOR$NODE_MINOR" in ''|*[!0-9]*) NODE_MAJOR=0; NODE_MINOR=0 ;; esac
+if [ "$NODE_MAJOR" -lt 20 ] || { [ "$NODE_MAJOR" -eq 20 ] && [ "$NODE_MINOR" -lt 19 ]; }; then
+  echo "Node ${NODE_V:-없음} — shadcn 생성기는 20.19+ 필요. 새로 짜지 말고 starter/shell 로: node starter/shell/serve.mjs"; exit 2
+fi
 HERE="$(cd "$(dirname "$0")" && pwd)"
 DIR="${1:-web}"
 t0=$(date +%s); step() { echo "▶ [$(( $(date +%s)-t0 ))s] $*"; }

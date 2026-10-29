@@ -69,3 +69,15 @@ test('본문 검사: 모양이 틀리면 400, 긴 글·많은 키워드는 자�
   assert.equal((await a({ ...body, answer: 'a'.repeat(4001) })).status, 400);
   assert.equal(parseBody({ ...body, terms: Array.from({ length: 50 }, (_, i) => `t${i}`) }).value.terms.length, 20);
 });
+
+test('OPENAI_BASE_URL: 있으면 그 주소(끝 / 정리)+/chat/completions 로, 없거나 비면 기본 주소로 부른다 · 키·주소는 응답에 없다', async () => {
+  const urls = [];
+  const fetchImpl = async (url) => { urls.push(url); return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: '답입니다.' } }] }) }; };
+  const base = 'http://proxy.internal:9/v1/';
+  const r = await createAssist({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: base }, fetchImpl })(body);
+  await createAssist({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: '  ' }, fetchImpl })(body);
+  await createAssist({ env: { OPENAI_API_KEY: 'sk-test-0000' }, fetchImpl })(body);
+  assert.deepEqual(urls, ['http://proxy.internal:9/v1/chat/completions', OPENAI_URL, OPENAI_URL]);
+  const bad = await createAssist({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: base }, fetchImpl: async () => { throw new TypeError(`fetch failed ${base} sk-test-0000`); } })(body);
+  for (const x of [r, bad]) assert.ok(!JSON.stringify(x).includes('sk-test-0000') && !JSON.stringify(x).includes('proxy.internal'));
+});

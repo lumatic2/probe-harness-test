@@ -155,3 +155,15 @@ test('근거 문서(키 없음): 질문이 화면 지표 이름(세 글자 이�
   assert.equal(r.json.reply, '화면 데이터 기준으로 「미연습: 12개」입니다.');
   assert.equal(r.json.refs, undefined);
 });
+
+test('OPENAI_BASE_URL: 있으면 그 주소(끝 / 정리)+/chat/completions 로, 없거나 비면 기본 주소로 부른다 · 키·주소는 응답에 없다', async () => {
+  const urls = [];
+  const fetchImpl = async (url) => { urls.push(url); return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: '답입니다.' } }] }) }; };
+  const base = 'http://proxy.internal:9/v1/';
+  const r = await createChat({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: base }, fetchImpl })(body);
+  await createChat({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: '  ' }, fetchImpl })(body);
+  await createChat({ env: { OPENAI_API_KEY: 'sk-test-0000' }, fetchImpl })(body);
+  assert.deepEqual(urls, ['http://proxy.internal:9/v1/chat/completions', OPENAI_URL, OPENAI_URL]);
+  const bad = await createChat({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: base }, fetchImpl: async () => { throw new TypeError(`fetch failed ${base} sk-test-0000`); } })(body);
+  for (const x of [r, bad]) assert.ok(!JSON.stringify(x).includes('sk-test-0000') && !JSON.stringify(x).includes('proxy.internal'));
+});

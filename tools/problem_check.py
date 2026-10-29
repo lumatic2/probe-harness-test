@@ -2,14 +2,15 @@
 
 사용: python3 tools/problem_check.py [docs/PROBLEM.md]
 종료코드: 0 기계 항목 통과 · 1 미충족 있음
-세는 것: ① 빈 절 ② 출처 태그 없는 내용 줄 ③ [짐작] 이 남은 절 ④ 1절(일의 흐름)의 [?] ⑤ 15절 미확인 행 수 ⑥ 확정 시각.
-판단 항목(실무자 동의·기준선·모퉁이 너머 등)은 guides/INTERVIEW.md 「문제 확정 관문」이 정한다 — 이 도구는 그 앞의 기계 점검이다.
+세는 것: ① 빈 절 ② 출처 태그 없는 내용 줄 ③ [짐작] 이 남은 절([가정:D번호] 가 붙은 줄은 허용 — 「모른다」를 가정 decision 으로 닫은 것)
+④ 1절(일의 흐름)의 [?] ⑤ 15절 미확인 행 수 ⑥ 확정 시각 ⑦ 숨은 사실 점검표(docs/interview/요약.md)의 「아직」.
+판단 항목(㉠ 실무자 명시 동의 · ㉡ 물어본 기록 · ㉢ 모름 처리)은 guides/INTERVIEW.md 「문제 확정 관문」이 정한다 — 이 도구는 ㉠ 판정을 돕는 기계 점검이다.
 """
 import re
 import sys
 from pathlib import Path
 
-TAG = re.compile(r"\[(README|데이터|답변|사용자|짐작)[^\]]*\]")
+TAG = re.compile(r"\[(README|데이터|답변|사용자|짐작|가정)[^\]]*\]")
 GUESS = "[짐작]"
 
 
@@ -58,7 +59,7 @@ def main(path):
         untagged = [l for l in lines if not TAG.search(l) and no not in ("0", "15")]  # 0절은 요약, 15절은 미확인 목록
         if untagged:
             problems.append(f"출처 태그 없음: {head} — {len(untagged)}줄 (첫 줄: {untagged[0][:50]})")
-        g = sum(l.count(GUESS) for l in lines)
+        g = sum(l.count(GUESS) for l in lines if "[가정:" not in l)
         if g and no == "13":
             print(f"참고 — 리스크의 [짐작] {g}개(예측이라 허용, 확인되면 태그를 바꾼다)")
         elif g:
@@ -69,6 +70,15 @@ def main(path):
                 problems.append(f"흐름의 모르는 구간 [?]: {q}개")
         if no == "15":
             print(f"미확인 행: {len(lines)}개 — 「답이 오면 바뀌는 것」이 MUST·성공 기준이면 관문 미충족")
+    summ = Path(path).resolve().parent / "interview" / "요약.md"
+    if summ.exists():
+        st = summ.read_text(encoding="utf-8")
+        m = re.search(r"^## 숨은 사실 점검표.*?$(.*?)(?=^## |\Z)", st, re.S | re.M)
+        if m:
+            pending = [l for l in m.group(1).splitlines()
+                       if l.strip().startswith("-") and "아직" in l and not re.search(r"확인됨|가정|해당 없음", l)]
+            if pending:
+                problems.append(f"숨은 사실 점검표 「아직」: {len(pending)}개 (첫 줄: {pending[0].strip()[:40]})")
     if re.search(r"확정 시각: \(\s*\)", text):
         print("확정 시각: 비어 있음(「문제 확정」 때 적는다)")
     for p in problems:

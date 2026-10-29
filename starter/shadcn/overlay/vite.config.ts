@@ -19,10 +19,10 @@ const STORE = path.join(ROOT, 'data', 'store')
 const MAX_BODY = 1024 * 1024
 const MAX_AUDIO_BODY = 12 * 1024 * 1024
 const fileEnv = loadEnv('production', ROOT, 'OPENAI_')
-const aiEnv = { OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? fileEnv.OPENAI_API_KEY, OPENAI_MODEL: process.env.OPENAI_MODEL ?? fileEnv.OPENAI_MODEL }
+const aiEnv = { OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? fileEnv.OPENAI_API_KEY, OPENAI_BASE_URL: process.env.OPENAI_BASE_URL ?? fileEnv.OPENAI_BASE_URL, OPENAI_MODEL: process.env.OPENAI_MODEL ?? fileEnv.OPENAI_MODEL }
 const assist = createAssist({ env: aiEnv })
 const chat = createChat({ env: aiEnv })
-const transcribe = createTranscribe({ env: { OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? fileEnv.OPENAI_API_KEY, OPENAI_STT_MODEL: process.env.OPENAI_STT_MODEL ?? fileEnv.OPENAI_STT_MODEL } })
+const transcribe = createTranscribe({ env: { OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? fileEnv.OPENAI_API_KEY, OPENAI_BASE_URL: process.env.OPENAI_BASE_URL ?? fileEnv.OPENAI_BASE_URL, OPENAI_STT_MODEL: process.env.OPENAI_STT_MODEL ?? fileEnv.OPENAI_STT_MODEL } })
 
 function sendJson(res: ServerResponse, code: number, obj: unknown) {
   res.statusCode = code

@@ -84,3 +84,15 @@ test('본문 검사: 모양·형식·크기가 틀리면 400', async () => {
   assert.equal(parseBody({ audio: b64(100), mime: 'audio/mpeg' }).value.ext, 'mp3');
   assert.equal(parseBody({ audio: b64(100), mime: 'audio/x-m4a' }).value.ext, 'm4a');
 });
+
+test('OPENAI_BASE_URL: 있으면 그 주소(끝 / 정리)+/audio/transcriptions 로, 없거나 비면 기본 주소로 부른다 · 키·주소는 응답에 없다', async () => {
+  const urls = [];
+  const fetchImpl = async (url) => { urls.push(url); return { ok: true, status: 200, json: async () => ({ text: '전사 결과입니다.' }) }; };
+  const base = 'http://proxy.internal:9/v1/';
+  const r = await createTranscribe({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: base }, fetchImpl })(small);
+  await createTranscribe({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: '  ' }, fetchImpl })(small);
+  await createTranscribe({ env: { OPENAI_API_KEY: 'sk-test-0000' }, fetchImpl })(small);
+  assert.deepEqual(urls, ['http://proxy.internal:9/v1/audio/transcriptions', STT_URL, STT_URL]);
+  const bad = await createTranscribe({ env: { OPENAI_API_KEY: 'sk-test-0000', OPENAI_BASE_URL: base }, fetchImpl: async () => { throw new TypeError(`fetch failed ${base} sk-test-0000`); } })(small);
+  for (const x of [r, bad]) assert.ok(!JSON.stringify(x).includes('sk-test-0000') && !JSON.stringify(x).includes('proxy.internal'));
+});

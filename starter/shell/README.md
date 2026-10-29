@@ -10,6 +10,8 @@ node starter/shell/serve.mjs          # 0.0.0.0:3000, PORT=4000 node … 로 포
 
 웹 IDE 의 **Browser** 도구에 `PORT=3000`, `URL=/` 를 준다. 의존성 설치 없음(Node 내장 모듈만).
 
+Node 20 미만이면(shadcn 생성기 `starter/shadcn/make.sh` 가 Node 20.19+ 필요) 이 셸을 쓴다 — 새 UI 를 짜지 않는다.
+
 화면 확인용 주소(해시):
 
 | 주소 | 화면 |

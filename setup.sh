@@ -57,7 +57,7 @@ if command -v node >/dev/null 2>&1; then if ./verify.sh "node --test starter/she
 END="${PROBE_END:-13:00}"
 EM=$(( 10#${END%%:*} * 60 + 10#${END##*:} ))
 at() { local m=$(( EM - $1 )); printf '%02d:%02d' $(( m / 60 )) $(( m % 60 )); }
-ANCHOR="종료 $END KST · 세팅·브리핑 끝 $(at 165) · 문제 확정 $(at 135) · 방향 결정·PLAN $(at 115) · 설계 확정·브리프 $(at 95) · 구현 끝 $(at 50) · 신규 기능 금지 $(at 25) · 예상 문제 $(at 20) · 사용자 읽기 $(at 10) · 확정 $(at 5) — 안내, 지키는 선은 신규 기능 금지·확정"
+ANCHOR="종료 $END KST · 세팅·브리핑 끝 $(at 165) · 문제 확정 $(at 140) · 방향 결정·PLAN $(at 125) · 설계 확정·구현 시작 $(at 105) · 얇은 결과 시연(피드백 DM 1차) $(at 70) · 구현 끝 $(at 50) · 신규 기능 금지 $(at 25) · 예상 문제 $(at 20) · 사용자 읽기 $(at 10) · 확정 $(at 5) — 마감선: 문제 확정·구현 시작·얇은 결과 시연·신규 기능 금지·확정, 늦으면 버리기 사다리(pathfind → 평가 → 디자인 → 부가 기능)"
 if [ -f docs/PLAN.md ]; then
   PYW="$(command -v python3 || command -v python || true)"
   [ -n "$PYW" ] && "$PYW" - "$ANCHOR" <<'PY'
@@ -93,5 +93,5 @@ cat <<REPORT
 ② 환경: ${ENV_LINE} (자세히 docs/RECON.txt)
 ③ 과제 파일: ${TASK_FILES:-(없음 — 과제 파일 위치를 사용자에게 묻는다)}
 ④ 시간(지금 ${NOW}): ${ANCHOR}
-다음(에이전트): AGENTS.md 전체와 guides/CONTEST-BRIEF.md 를 읽고, 위 보고 ①~④ 를 그대로 사용자에게 전하라. 덧붙일 것은 모델·effort 한 줄뿐. 과제 README 는 읽지 않고 다른 문서도 만들지 않는다. 마지막 줄: 「다음 입력(오케): 과제 브리핑해줘」
+다음(에이전트): AGENTS.md 전체와 guides/CONTEST-BRIEF.md 를 읽고(guides/STAGES/M0-세팅.md 도), 위 보고 ①~④ 를 그대로 사용자에게 전하라. 덧붙일 것은 모델·effort 한 줄과 「스킬(\$)이 안 보이면 /quit → codex 로 다시 켠다」 한 줄뿐. 과제 README 는 읽지 않고 다른 문서도 만들지 않는다. 마지막 줄: 「다음 입력(오케): 과제 브리핑해줘」
 REPORT

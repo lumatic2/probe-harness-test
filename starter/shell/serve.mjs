@@ -23,10 +23,10 @@ const MAX_BODY = 1024 * 1024;
 const MAX_AUDIO_BODY = 12 * 1024 * 1024;
 const STORE = path.join(ROOT, 'data', 'store');
 const DOMAINS = path.join(ROOT, '..', 'domains');
-const aiEnv = { OPENAI_API_KEY: process.env.OPENAI_API_KEY, OPENAI_MODEL: process.env.OPENAI_MODEL };
+const aiEnv = { OPENAI_API_KEY: process.env.OPENAI_API_KEY, OPENAI_BASE_URL: process.env.OPENAI_BASE_URL, OPENAI_MODEL: process.env.OPENAI_MODEL };
 const assist = createAssist({ env: aiEnv });
 const chat = createChat({ env: aiEnv });
-const transcribe = createTranscribe({ env: { OPENAI_API_KEY: process.env.OPENAI_API_KEY, OPENAI_STT_MODEL: process.env.OPENAI_STT_MODEL } });
+const transcribe = createTranscribe({ env: { OPENAI_API_KEY: process.env.OPENAI_API_KEY, OPENAI_BASE_URL: process.env.OPENAI_BASE_URL, OPENAI_STT_MODEL: process.env.OPENAI_STT_MODEL } });
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',

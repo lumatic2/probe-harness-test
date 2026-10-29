@@ -5,7 +5,10 @@
 // reason(모의일 때만) = no-key | timeout | http-<코드> | network | empty
 export const DEFAULT_STT_MODEL = 'whisper-1';
 export const TIMEOUT_MS = 20000;
-export const STT_URL = 'https://api.openai.com/v1/audio/transcriptions';
+// 주소 = env.OPENAI_BASE_URL(과제 환경이 주는 API 주소, 끝 / 정리; 없으면 OpenAI 기본) + 경로. 키·주소는 응답·로그에 싣지 않는다.
+const DEFAULT_BASE = 'https://api.openai.com/v1';
+const apiUrl = (env, path) => `${String(env.OPENAI_BASE_URL ?? '').trim().replace(/\/+$/, '') || DEFAULT_BASE}${path}`;
+export const STT_URL = `${DEFAULT_BASE}/audio/transcriptions`;
 export const MAX_AUDIO_BYTES = 8 * 1024 * 1024;
 const EXT = { 'audio/webm': 'webm', 'audio/ogg': 'ogg', 'audio/mp4': 'mp4', 'audio/mpeg': 'mp3', 'audio/mp3': 'mp3', 'audio/wav': 'wav', 'audio/x-wav': 'wav', 'audio/wave': 'wav', 'audio/x-m4a': 'm4a', 'audio/m4a': 'm4a' };
 const B64 = /^[A-Za-z0-9+/]+={0,2}$/;
@@ -48,7 +51,7 @@ export function createTranscribe({ env = process.env, fetchImpl = globalThis.fet
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), timeoutMs);
     try {
-      const res = await fetchImpl(STT_URL, { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form, signal: ctl.signal });
+      const res = await fetchImpl(apiUrl(env, '/audio/transcriptions'), { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form, signal: ctl.signal });
       if (!res.ok) return mock(`http-${res.status}`);
       const data = await res.json();
       const text = String(data?.text ?? '').trim();

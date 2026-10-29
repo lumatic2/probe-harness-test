@@ -57,7 +57,8 @@
 | 이름 | 용도 | 없으면 |
 |---|---|---|
 | … | … | … (폴백 동작) |
-| `OPENAI_API_KEY` | AI 기능 화면(`#/assist`)의 개선 제안과 AI 대화창(W17, `POST /api/chat`) 호출용 OpenAI 키. **서버 환경에만** 두고 브라우저·로그·커밋에 넣지 않는다 | 모의 응답(고정 틀)을 돌려주고 화면에 「모의 응답」 표시. 판정은 규칙 코드라 키와 무관 |
+| `OPENAI_API_KEY` | AI 기능 화면(`#/assist`)의 개선 제안과 AI 대화창(W17, `POST /api/chat`) 호출용 OpenAI 키. **서버 환경에만** 두고 브라우저·로그·커밋에 넣지 않는다 | 과제 README 「실행 환경」이 제공하면 실제 호출, 없으면 모의 — 모의 응답(고정 틀)을 돌려주고 화면에 「모의 응답」 표시. 판정은 규칙 코드라 키와 무관 |
+| `OPENAI_BASE_URL` | 과제 환경이 주는 API 주소(끝 `/` 는 떼고 `/chat/completions`·`/audio/transcriptions` 를 붙여 부른다). 키와 같이 **서버 환경에만** 둔다 | OpenAI 기본(`https://api.openai.com/v1`) |
 | `OPENAI_MODEL` | 위 호출에 쓸 모델 이름 | `gpt-4o-mini` |
 | `OPENAI_STT_MODEL` | 녹음 전사(W18, `POST /api/transcribe`)에 쓸 모델 이름(키는 `OPENAI_API_KEY`) | `whisper-1` · 키가 없으면 모의 전사 |
 | `VITE_DOMAIN` | 빌드 때 띄울 도메인 설정 이름(`starter/domains/<이름>`) | `?domain=` 주소 → `active.json` 의 `active` |

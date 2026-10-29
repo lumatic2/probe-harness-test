@@ -5,7 +5,7 @@ description: "만들 일을 실제 작업 순서대로 4~7단계로 나누고, �
 
 # pathfind — 만들기 전에 이미 있는 바퀴를 찾는다
 
-대회판 pathfind — 정한 방향을 4~7단계로 나누고, 단계마다 이미 있는 바퀴를 실제 검색 결과로 찾는다. 절차·판정값·`render.py` 는 원본(공개 레포 `lumatic2/pathfind-web`)과 같다.
+대회판 pathfind — 정한 방향을 4~7단계로 나누고, 단계마다 이미 있는 바퀴를 실제 검색 결과로 찾는다. 절차·판정값·`render.py` 는 원본(공개 레포 `lumatic2/pathfind-web`)과 같다. **대회판 변경: 선택 단계(마감선이 빠듯하면 건너뛴다 — 버리기 사다리 첫 칸)이고, 산출은 연구노트 md 하나다 — HTML 흐름도는 만들지 않는다**(JSON 에 `out_html` 을 넣지 않는다). 오케가 서브에이전트로 띄워 돌리고 오케는 그동안 다음 일을 한다.
 
 ## 대상인지 먼저 가른다
 
@@ -34,7 +34,7 @@ description: "만들 일을 실제 작업 순서대로 4~7단계로 나누고, �
 
 ### 3. JSON 으로 정리해 `render.py` 를 한 번 돌린다
 
-파일 생성은 산문으로 하지 않는다. 아래 스키마의 JSON 하나를 stdin 으로 넘기면 연구노트와 흐름도가 함께 나온다. 스크립트는 표준 라이브러리만 쓴다.
+파일 생성은 산문으로 하지 않는다. 아래 스키마의 JSON 하나를 stdin 으로 넘기면 연구노트가 나온다(`out_html` 을 넣었을 때만 흐름도 html 도 나온다 — 대회판은 넣지 않는다). 스크립트는 표준 라이브러리만 쓴다.
 
 **출력 위치**: `docs/research/pathfind/`. 경로는 작업 디렉터리 기준 상대경로로만 쓴다(밖으로 나가면 스크립트가 거부한다).
 
@@ -47,7 +47,6 @@ JSON 을 임시 파일로 썼다면 실행 뒤 지운다. 성공하면 stdout �
 ```
 검색 호출 횟수: <n>
 연구노트: ./docs/research/pathfind/<주제>.md — <n>바이트
-흐름도 설계도: ./docs/research/pathfind/<주제>.html — <n>바이트
 ```
 
 실패하면 stderr 의 `ERROR:` 메시지대로 JSON 을 고쳐 다시 돌린다. stdout 없이 "작성 완료"라고 쓰지 않는다 — 바이트 값은 실행해야만 생기는 값이다.
@@ -57,7 +56,7 @@ JSON 을 임시 파일로 썼다면 실행 뒤 지운다. 성공하면 stdout �
 ```
 topic: string
 out_md: string            # 예: docs/research/pathfind/타워디펜스-웹.md
-out_html: string          # 예: docs/research/pathfind/타워디펜스-웹.html
+out_html: string          # 선택 — 대회판은 넣지 않는다(없으면 html 렌더 안 함)
 search_calls: integer ≥1
 steps: [                  # 비어 있으면 안 됨
   no: number|string
@@ -78,7 +77,7 @@ steps: [                  # 비어 있으면 안 됨
 
 ### 4. 알린다
 
-두 파일의 경로만 사용자에게 준다. 연구노트 md 는 열지 않는다. 흐름도 html 은 사용자가 탐색기에서 연다.
+연구노트 md 경로만 알린다(열지 않는다).
 
 ## 응답
 
