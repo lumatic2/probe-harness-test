@@ -93,5 +93,5 @@ cat <<REPORT
 ② 환경: ${ENV_LINE} (자세히 docs/RECON.txt)
 ③ 과제 파일: ${TASK_FILES:-(없음 — 과제 파일 위치를 사용자에게 묻는다)}
 ④ 시간(지금 ${NOW}): ${ANCHOR}
-다음(에이전트): AGENTS.md 전체와 guides/CONTEST-BRIEF.md 를 읽고(guides/STAGES/M0-세팅.md 도), 위 보고 ①~④ 를 그대로 사용자에게 전하라. 덧붙일 것은 모델·effort 한 줄과 「스킬(\$)이 안 보이면 /quit → codex 로 다시 켠다」 한 줄뿐. 과제 README 는 읽지 않고 다른 문서도 만들지 않는다. 마지막 줄: 「다음 입력(오케): 과제 브리핑해줘」
+다음(에이전트): 너는 오케다 — AGENTS.md 전체와 roles/오케.md 전체와 guides/CONTEST-BRIEF.md 를 읽고(guides/STAGES/M0-세팅.md 도), 위 보고 ①~④ 를 그대로 사용자에게 전하라. 덧붙일 것은 모델·effort 한 줄과 「스킬(\$)이 안 보이면 /quit → codex 로 다시 켠다」 한 줄뿐. 과제 README 는 읽지 않고 다른 문서도 만들지 않는다. 마지막 줄: 「다음 입력(오케): 과제 브리핑해줘」
 REPORT

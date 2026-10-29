@@ -1,6 +1,6 @@
 # guides/KICKOFF.md — 시작 순서와 세션 기동
 
-> 사람이 외워서 치는 것은 아래 ⓪~② 와 역할 탭의 한 줄뿐이다. 긴 프롬프트를 붙여 넣거나 빈칸을 채우지 않는다 — 다음 할 일은 오케스트레이터가 매 응답 끝 `다음 입력:` 줄로 알려 준다(AGENTS.md 「사용자 신호」 · 단계 상세는 `guides/STAGES/`).
+> 사람이 외워서 치는 것은 아래 ⓪~② 와 역할 탭의 한 줄뿐이다. 긴 프롬프트를 붙여 넣거나 빈칸을 채우지 않는다 — 다음 할 일은 오케스트레이터가 매 응답 끝 `다음 입력:` 줄로 알려 준다(`roles/오케.md` 「사용자 신호」 · 단계 상세는 `guides/STAGES/`).
 > 시험장 처음 상태: 웹 IDE 터미널은 `~/workspace $` 셸, 탐색기에 과제 README 와 폴더. Codex 는 꺼져 있고 우리 파일은 없다. 반입은 공개 레포 clone 뿐(개인 PC 업로드 불가).
 > 재시작은 필요 없다 — 세팅이 끝나면 같은 Codex 세션이 그대로 오케스트레이터가 된다.
 
@@ -27,7 +27,7 @@ codex
 GitHub 의 lumatic2/probe-harness 레포를 이 폴더에 클론하고 README 대로 세팅해줘
 ```
 
-Codex 가 레포를 찾아 작업 공간 안에 클론 → 클론 폴더 README 「세팅」 절 → `bash probe-harness/setup.sh` → AGENTS.md 를 읽고 setup.sh 가 출력한 **세팅 완료 보고 ①~④**(깐 것 · 환경 · 과제 파일 · 시간 앵커)를 말한다. setup.sh 는 과제 README·데이터를 덮지 않고, 과제가 준 AGENTS.md 는 우리 것 맨 끝 절에 붙이고, recon·복원 검증·`scaffold` 커밋까지 한다. 레포를 못 찾거나 clone 이 막히면 URL 을 손으로 넣지 않는다.
+Codex 가 레포를 찾아 작업 공간 안에 클론 → 클론 폴더 README 「세팅」 절 → `bash probe-harness/setup.sh` → AGENTS.md 와 `roles/오케.md` 를 읽고 setup.sh 가 출력한 **세팅 완료 보고 ①~④**(깐 것 · 환경 · 과제 파일 · 시간 앵커)를 말한다. setup.sh 는 과제 README·데이터를 덮지 않고, 과제가 준 AGENTS.md 는 우리 것 맨 끝 절에 붙이고, recon·복원 검증·`scaffold` 커밋까지 한다. 레포를 못 찾거나 clone 이 막히면 URL 을 손으로 넣지 않는다.
 
 세팅이 도는 동안 사람은 과제 README 를 읽는다. 보고가 뜨면 ① 탐색기에서 `probe-harness/` 폴더가 **사라졌는지만** 본다(나머지는 보고가 확인했다) ② 에디터에 `docs/MEMO.md`·`docs/interview/보낼글.txt` 를 열어 둔다 — M1 내내 README·메모·보낼 글이 탭 전환 한 번 거리에 있게.
 
@@ -78,7 +78,7 @@ docs/brief/<모듈>.md 읽고 그대로 해
 ## 승계 (오케스트레이터 열화 때 — `succeed` 스킬이 출력한 프롬프트를 새 탭에 붙인다)
 
 ```
-AGENTS.md 와 docs/HANDOFF.md 를 읽어라 — HANDOFF 가 이어받기 정본이다. 이어서 HANDOFF 「문서 지도」의 파일과 지금 단계의 `guides/STAGES/` 파일을 읽어라. 너는 오케스트레이터를 이어받는다(사유: <…>). 지금 <date 로 읽은 지금>, 확정 목표 12:55.
+AGENTS.md 를 읽고, 이어서 roles/오케.md 전체를 읽어라(오케의 신호 규칙·`다음 입력:` 줄). 그다음 docs/HANDOFF.md 를 읽어라 — HANDOFF 가 이어받기 정본이다. 이어서 HANDOFF 「문서 지도」의 파일과 지금 단계의 `guides/STAGES/` 파일을 읽어라. 너는 오케스트레이터를 이어받는다(사유: <…>). 지금 <date 로 읽은 지금>, 확정 목표 12:55.
 ① 지금 상황 3줄 ② 다음 할 일 1개 ③ 다음 앵커까지 남은 시간 — 말한 뒤 내 확인을 받고 진행하라.
 ```
 
@@ -93,5 +93,5 @@ git clone --depth 1 https://github.com/openai/plugins.git /tmp/plugins 뒤 data-
 
 ## 컨텍스트 관리
 
-- compact 는 상태가 전부 파일에 들어간 순간에만(권장 지점은 `guides/STAGES/공통.md` 「세션 운용」). 직후에는 AGENTS.md + HANDOFF + 현 단계 guide 를 다시 읽는다.
-- 승계 기준은 AGENTS.md 「세션 운용」·`guides/STAGES/공통.md`. 코파톤(225분)에서 compact 반복으로 후반 요청 1건이 15분까지 늘었다 — 180분에서는 더 빨리 승계한다.
+- compact 는 상태가 전부 파일에 들어간 순간에만(권장 지점은 `guides/STAGES/공통.md` 「세션 운용」). 직후에는 AGENTS.md + `roles/오케.md` + HANDOFF + 현 단계 guide 를 다시 읽는다.
+- 승계 기준은 `roles/오케.md` 「세션 운용」·`guides/STAGES/공통.md`. 코파톤(225분)에서 compact 반복으로 후반 요청 1건이 15분까지 늘었다 — 180분에서는 더 빨리 승계한다.

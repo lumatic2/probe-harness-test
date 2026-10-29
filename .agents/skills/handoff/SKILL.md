@@ -12,7 +12,7 @@ description: docs/HANDOFF.md 를 "이 대화를 전혀 모르는 새 세션이 �
 1. 아래 형식으로 `docs/HANDOFF.md` 전체를 지금 시점 기준으로 다시 쓴다(없으면 만든다).
 2. 쓰는 모든 파일·경로·숫자는 **지금 실제로 확인한 것만**. `ls`·`git log -1`·마지막 `docs/VERIFICATION.md` 줄로 확인한 뒤 적는다. 확인 못 한 것은 쓰지 않는다.
 3. `AGENTS.md` 「목표·컨텍스트」가 대화 중 바뀌었는데 반영 안 됐으면 같이 고친다.
-4. 스스로 판정: "새 세션이 AGENTS.md + 이 파일만으로 다음 행동을 정확히 시작할 수 있나?" 부족하면 채운다.
+4. 스스로 판정: "새 세션이 AGENTS.md(오케면 `roles/오케.md` 도) + 이 파일만으로 다음 행동을 정확히 시작할 수 있나?" 부족하면 채운다.
 5. 커밋: 마일스톤 전환이면 태그 커밋 `git commit -m "<태그>: <한 줄>"`(scaffold·define·design·build·feedback·final — 커밋 트리거 1), 아니면 `handoff:` 커밋(`handoff: <단계> — <한 줄>`).
 
 ## 형식
