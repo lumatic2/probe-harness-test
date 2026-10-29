@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>업무 화면</title>
+<link rel="stylesheet" href="/vendor/skhynix/design.css">
+<link rel="stylesheet" href="/shell.css">
+</head>
+<body>
+<!-- 앱 프레임 하나: 상단 바 · 공통 필터 줄 · 왼쪽 메뉴 · 본문. 주소는 해시(#/dashboard #/list #/item/<id> #/form #/report #/widgets). 빌드 없음. -->
+<main class="skh-dashboard sh-app">
+  <div class="sh-body">
+    <nav class="sh-nav" id="sh-nav" aria-label="메뉴"></nav>
+    <div class="sh-main">
+      <header class="sh-header">
+        <div class="sh-titles">
+          <p class="sh-eyebrow" id="sh-eyebrow"></p>
+          <h1><span id="sh-service">불러오는 중…</span> <small class="sh-asof">데이터 기준 <strong id="sh-asof">–</strong></small></h1>
+        </div>
+        <div class="sh-actions-top">
+          <button type="button" class="sh-btn" id="sh-chat-open" aria-controls="sh-chat" aria-expanded="false" hidden></button>
+          <a class="sh-btn" id="sh-secondary" href="#/report">리포트</a>
+          <a class="sh-primary" id="sh-action" href="#/dashboard">시작</a>
+        </div>
+      </header>
+      <div class="sh-filter" id="sh-filter" role="search" aria-label="공통 필터">
+        <label>기간<select id="sh-period"></select></label>
+        <label><span id="sh-group-label">그룹</span><select id="sh-group"></select></label>
+        <span class="sh-result" id="sh-result" role="status"></span>
+      </div>
+      <section class="sh-view" id="sh-view" tabindex="-1" aria-live="polite"></section>
+    </div>
+  </div>
+<aside class="sh-chat-panel" id="sh-chat" aria-labelledby="sh-chat-title" hidden>
+  <div class="sh-chat-head"><h2 id="sh-chat-title"></h2><button type="button" class="sh-btn" id="sh-chat-close">닫기</button></div>
+  <div class="sh-chat-body" id="sh-chat-body"></div>
+</aside>
+</main>
+<noscript>이 화면은 JavaScript 가 필요합니다.</noscript>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

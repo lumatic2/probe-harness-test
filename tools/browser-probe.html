@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Browser 미리보기 기능 점검</title>
+<style>
+  body { font: 15px/1.6 system-ui, sans-serif; margin: 24px; color: rgb(18,18,18); }
+  h1 { font-size: 18px; margin: 0 0 12px; }
+  .row { display: flex; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid rgb(229,229,229); }
+  .row b { width: 150px; }
+  button, input, textarea { font: inherit; }
+  .r { margin-left: auto; min-width: 220px; color: rgb(90,90,90); }
+  .ok { color: rgb(26,127,55); } .ng { color: rgb(198,40,40); }
+  #drop { border: 1px solid rgb(200,200,200); padding: 6px 12px; border-radius: 6px; }
+</style>
+</head>
+<body>
+<h1>Browser 미리보기 기능 점검 — 키트 재료가 기대는 것</h1>
+<div class="row"><b>① 마이크·녹음</b><button id="mic">녹음 2초</button><span class="r" id="mic-r">-</span></div>
+<div class="row"><b>② 파일 고르기</b><input type="file" id="file"><span id="drop">여기에 끌어 놓기</span><span class="r" id="file-r">-</span></div>
+<div class="row"><b>③ 파일 내려받기</b><button id="dl">probe.csv 받기</button><span class="r" id="dl-r">-</span></div>
+<div class="row"><b>④ 인쇄 창</b><button id="pr">인쇄</button><span class="r" id="pr-r">-</span></div>
+<div class="row"><b>⑤ 한글 + Enter</b><textarea id="ime" rows="1" placeholder="안녕 반장님 치고 Enter"></textarea><span class="r" id="ime-r">-</span></div>
+<div class="row"><b>⑥ sessionStorage</b><button id="ss">저장 뒤 새로고침</button><span class="r" id="ss-r">-</span></div>
+<div class="row"><b>⑦ 클립보드 복사</b><button id="cp">복사</button><span class="r" id="cp-r">-</span></div>
+<script>
+const $ = (id) => document.getElementById(id);
+const say = (id, ok, msg) => { const el = $(id); el.textContent = (ok ? '✓ ' : '✗ ') + msg; el.className = 'r ' + (ok ? 'ok' : 'ng'); };
+$('mic').onclick = async () => {
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const rec = new MediaRecorder(st); const chunks = [];
+    rec.ondataavailable = (e) => chunks.push(e.data);
+    rec.onstop = () => { st.getTracks().forEach((t) => t.stop()); const b = new Blob(chunks); say('mic-r', b.size > 0, `${b.size} bytes · ${rec.mimeType || '형식 미상'}`); };
+    rec.start(); setTimeout(() => rec.stop(), 2000);
+  } catch (e) { say('mic-r', false, e.name + ' ' + e.message); }
+};
+const gotFile = (f) => f && say('file-r', true, `${f.name} · ${f.size} bytes`);
+$('file').onchange = (e) => gotFile(e.target.files[0]);
+document.addEventListener('dragover', (e) => e.preventDefault());
+document.addEventListener('drop', (e) => { e.preventDefault(); gotFile(e.dataTransfer.files[0]); });
+$('dl').onclick = () => {
+  const url = URL.createObjectURL(new Blob(['﻿열1,열2\n한글,1\n'], { type: 'text/csv' }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: 'probe.csv' }); a.click();
+  say('dl-r', true, '눌렀음 — 받은 파일이 어디 생기는지 눈으로');
+};
+$('pr').onclick = () => { const t = Date.now(); window.print(); say('pr-r', Date.now() - t > 300, Date.now() - t > 300 ? '인쇄 창 뜸' : '창이 안 뜬 듯(바로 돌아옴)'); };
+$('ime').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' || e.shiftKey) return;
+  if (e.isComposing || e.keyCode === 229) { say('ime-r', false, '조합 중 Enter 감지 — 한 번 더 눌러 봄'); return; }
+  e.preventDefault(); say('ime-r', true, `전송: 「${$('ime').value}」`);
+});
+$('ss').onclick = () => { sessionStorage.setItem('probe', String(Date.now())); location.reload(); };
+if (sessionStorage.getItem('probe')) say('ss-r', true, '새로고침 뒤에도 남음');
+$('cp').onclick = async () => { try { await navigator.clipboard.writeText('클립보드 점검'); say('cp-r', true, '복사됨 — 다른 곳에 ⌘V'); } catch (e) { say('cp-r', false, e.name); } };
+</script>
+</body>
+</html>
