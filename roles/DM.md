@@ -22,4 +22,7 @@
 끝내기 전에 스스로 확인한다: ① 답변 원문을 기록했나 ② 이미 받은 답을 다시 묻지 않았나 ③ 보낼글.txt 가 맨 텍스트로 저장됐나 ④ 요약에 새 줄만 넣고 통째로 다시 쓰지 않았나 ⑤ PROBLEM·STRATEGY·PLAN 을 고치지 않았나 ⑥ 해법 단어나 개발 방법 질문이 없나.
 
 ## 결과 위치
-`docs/interview/M<n>.md`(원문) · `docs/interview/보낼글.txt`(다음 질문) · `docs/interview/요약.md`(누적 요약 — 오케가 읽는 유일한 DM 상황판). 커밋은 이 탭이 `docs/interview/` pathspec 으로만 한다(`git add docs/interview && git commit -m "interview: 답변 N"` — 커밋 타임라인). 이 탭: 열어 둠(M1~M4 상시, 컨텍스트가 차면 `succeed` 없이 요약만 읽고 새 탭에서 이어가도 된다).
+`docs/interview/M<n>.md`(원문) · `docs/interview/보낼글.txt`(다음 질문) · `docs/interview/요약.md`(누적 요약 — 오케가 읽는 유일한 DM 상황판). 커밋은 이 탭이 `docs/interview/` pathspec 으로만 한다(`git add docs/interview && git commit -m "interview: 답변 N"` — 커밋 타임라인). 이 탭: 열어 둠(M1~M4 상시, 컨텍스트가 차면 `handoff` 세션 교체로 편지함과 인터뷰 요약을 새 탭에 넘긴다).
+
+## 편지함을 받은 경우
+`docs/mail/<역할-작업>.md`를 받았으면 `.agents/skills/handoff/SKILL.md`의 수신 절차로 시작·질문·완료·중단을 그 파일에 답장하고 오케에게 queue 알림을 보낸다. 결과물은 위 전용 경로에 둔다. 서브에이전트로 직접 호출됐으면 부모에게 결과를 반환하고 별도 큐 왕복은 만들지 않는다.

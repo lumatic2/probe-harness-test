@@ -1,6 +1,6 @@
 # AGENTS.md — 작업 정본 (SK하이닉스 AI 해커톤 2026 2차 예선 · Cofa Probe)
 
-> **모든 탭이 항상 처음 읽는 공통 문서**(8KB 이하). 한 역할만 쓰는 내용은 여기 없다 — `roles/`·`docs/brief/`·`guides/STAGES/` 에 있다. 처음·승계·compact 직후에 이 파일 전체를 읽는다. 이어받기 `docs/HANDOFF.md`, 대회 규칙·채점 `guides/CONTEST-BRIEF.md`.
+> **모든 탭이 항상 처음 읽는 공통 문서**(8KB 이하). 한 역할만 쓰는 내용은 여기 없다 — `roles/`·`docs/mail/`·`guides/STAGES/` 에 있다. 처음·승계·compact 직후에 이 파일 전체를 읽는다. 이어받기 `docs/HANDOFF.md`, 대회 규칙·채점 `guides/CONTEST-BRIEF.md`.
 
 ## 대회 맥락
 결과물만이 아니라 **과정 전체**가 채점된다: 에이전트 대화 · 터미널 세션 · AI 도구 설정 · git 커밋 타임라인 · 테스트 · 문서. **응답 시간을 고려한 위임과 시간 안배도 채점 대상**이다 — 기다리는 일은 병렬로 맡기고, 긴 일은 예상 소요를 먼저 말한다. 10:00 시작, 12:55 확정, 이후 서술형 6문항(직접 타이핑, AI·복붙 없음).
@@ -12,9 +12,9 @@
 - Browser 서버는 `0.0.0.0` 바인딩, 서버 탭 유지. 세팅 후 `/quit` → bash에서 `codex` → Codex 안에서 `/resume`으로 오케 대화를 선택한다.
 
 ## 역할 정하기 — 첫 지시가 정한다
-- 세팅 요청(`… 클론하고 README 대로 세팅해줘`)을 받았거나 `succeed` 승계 프롬프트로 시작했거나 사용자가 너를 오케라 부르면 → 너는 오케다. **지금 `roles/오케.md` 전체를 읽고** 그 신호 규칙을 따른다. compact 직후에도 다시 읽는다.
+- 세팅 요청(`… 클론하고 README 대로 세팅해줘`)을 받았거나 오케 승계 프롬프트로 시작했거나 사용자가 너를 오케라 부르면 → 너는 오케다. **지금 `roles/오케.md` 전체를 읽고** 그 신호 규칙을 따른다. compact 직후에도 다시 읽는다.
 - 「`roles/<역할>.md` 읽고 그대로 해」 → 그 역할 문서(DM·설명·평가·보안·리서치·제출점검)를 읽고 따른다.
-- 「`docs/brief/<모듈>.md` 읽고 그대로 해」 → 구현 탭. 이 파일 + 브리프로 일한다.
+- 「`docs/mail/<모듈>.md` 읽고 그대로 해」 → 편지함에 지정된 역할. 이 파일 + `.agents/skills/handoff/SKILL.md` + 편지함으로 일한다.
 - 어느 쪽도 아니면 일하기 전에 어느 탭인지 사용자에게 한 줄 묻는다. 다른 역할 전용 규칙은 따르지 않는다.
 
 ## 목표 · 컨텍스트 (M1 에서 `docs/PROBLEM.md` 를 채우고 여기엔 요약만)
@@ -27,13 +27,13 @@
 | 탭 | 하는 일 | 쓰는 파일 |
 |---|---|---|
 | 사용자 | 승인 · DM 복붙 중계 · 서술형 | `docs/MEMO.md` (사용자 것) |
-| 오케 | 계획·분해·검수·병합·커밋·브리프·승계 | **공유 파일**(README·AGENTS·PROBLEM·STRATEGY·ARCHITECTURE·PLAN·DECISIONS·HANDOFF·`docs/brief/`·루트 테스트 러너) · `tests/contract/` · 통합 테스트 |
+| 오케 | 계획·분해·검수·병합·커밋·브리프·승계 | **공유 파일**(README·AGENTS·PROBLEM·STRATEGY·ARCHITECTURE·PLAN·DECISIONS·HANDOFF·`docs/mail/`·루트 테스트 러너) · `tests/contract/` · 통합 테스트 |
 | DM | 실무자 회신 전담 | `docs/interview/` (단 `질문후보.md` 는 오케) |
 | 구현 (모듈 이름) | 브리프 하나 = 모듈 하나 | `src/<모듈>/` · `tests/<모듈>/` |
 | 설명 | 이해용 질문 · 서술형 연습 | `docs/서술형-연습.md` · `docs/내가-만든-것.md` |
 | 서브에이전트 | 오케가 띄우는 일회용 (리서치·평가·보안·점검) | 맡은 결과 문서만 |
 
-자기 소유가 아닌 파일은 고치지 않는다 — 고칠 곳이 보이면 오케(또는 해당 탭)에 보고한다. 누가 언제 무엇을 하는지는 `guides/STAGES/시간표.md`.
+편지함은 오케·지정 워커가 자기 메시지만 추가한다. 자기 소유가 아닌 파일은 고치지 않는다 — 고칠 곳이 보이면 오케(또는 해당 탭)에 보고한다. 누가 언제 무엇을 하는지는 `guides/STAGES/시간표.md`.
 
 ## 판단 원칙 (전체 `guides/STAGES/공통.md`)
 - 요구는 README 로 표를 만들고 빈칸·어긋난 칸만 실무자에게 묻는다. MUST 를 닫기 전에 선택 항목을 시작하지 않는다. **요구에 없는 기능은 만들지 않는다.** 설명 못 하는 구조는 만들지 않는다.
@@ -63,5 +63,5 @@
 - 검증은 `./verify.sh "<커맨드>"` 로 돌려 출력으로 말한다. 빨강→초록을 본 뒤에만 완료 보고. **같은 원인으로 2번 실패하면 멈추고 보고한다**(오케는 지시를 고쳐 새 탭에서 다시).
 
 ## 스킬 · 시크릿
-- 스킬(`.agents/skills/`: `handoff`·`verify`·`decision`·`brief`·`evaluate`·`security`·`submit`·`succeed`·`pathfind`·`systematic-debugging`)은 **`$이름`** 으로 부른다(`/` 는 Codex 내장 명령 전용이라 `/succeed` 는 안 잡힌다). 안 잡히면 이 작업 폴더의 `.agents/skills/<이름>/SKILL.md` 를 직접 읽고 그대로 수행한다(`~/.codex/skills/` 를 찾지 않는다). 작업 폴더 `.agents/skills/` 밖 스킬·플러그인(계정에 깔린 원격 플러그인 포함)은 쓰지 않는다 — 작업 공간 밖을 읽는 승인 요청이 되고 채점 기록에도 섞인다.
+- 스킬(`.agents/skills/`: `handoff`·`verify`·`decision`·`evaluate`·`security`·`submit`·`pathfind`·`systematic-debugging`)은 **`$이름`** 으로 부른다(`/` 는 Codex 내장 명령 전용이라 `/handoff` 는 안 잡힌다). 안 잡히면 이 작업 폴더의 `.agents/skills/<이름>/SKILL.md` 를 직접 읽고 그대로 수행한다(`~/.codex/skills/` 를 찾지 않는다). 작업 폴더 `.agents/skills/` 밖 스킬·플러그인(계정에 깔린 원격 플러그인 포함)은 쓰지 않는다 — 작업 공간 밖을 읽는 승인 요청이 되고 채점 기록에도 섞인다.
 - MCP 는 기본 0개. 켜면 이유 한 줄을 DECISIONS 에. 키·토큰은 `.env` 에만, `.env.example` 에 이름만.
