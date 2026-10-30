@@ -26,7 +26,7 @@ description: 오케스트레이터가 구현 세션에 줄 모듈 브리프(docs
 - <바꾸면 안 되는 동작·파일>
 ## 완료 조건 (pass/fail)
 - `./verify.sh "<테스트 명령>"` PASS — 테스트 파일 `tests/<모듈>/...` 에 <단언 한 줄>
-- 실패 → 최소 수정 → 같은 명령 재통과. 3회 실패면 멈추고 보고.
+- 실패 → `.agents/skills/systematic-debugging/SKILL.md`의 재현·원인 확인 → 최소 수정 → 같은 명령 재통과. 같은 원인으로 2번 실패면 멈추고 보고.
 - 계약 테스트 `tests/contract/` 는 고치지 않는다(오케스트레이터 소유). 틀렸다고 보면 concerns 에.
 - `src/<모듈>/README.md` 를 `starter/README-TEMPLATE.md` 맨 아래 「모듈 README 틀」로 — 명령은 실제로 돈 것, 파일·함수 이름은 실제로 있는 것만
 ## 끝나면
