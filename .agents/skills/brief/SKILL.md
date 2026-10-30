@@ -46,3 +46,10 @@ status / changed(파일) / verification(빨강 출력 → 초록 출력) / conce
 2. 검수 4 — ① 완료 조건 명령을 **직접** `./verify.sh` 로 재실행(계약 테스트 초록, PASS 아니면 받지 않음) ② `docs/ARCHITECTURE.md` 모듈 표·브리프 「지킬 것」과 대조 + `src/<모듈>/README.md` 가 있고 그 검증 명령이 실제로 돈다 + `python3 tools/security_check.py` 막는 것 0 ③ `git diff --stat <직전 검수 커밋>.. -- . ':!src/<모듈>' ':!tests/<모듈>' ':!docs/brief/<모듈>.md'` 로 범위 밖 변경 0 ④ `tests/contract/` 무변경(바뀌었으면 즉시 불합격). 빠진 것은 브리프 맨 아래 「재지시」 절로 돌려보낸다.
 3. `docs/PLAN.md` 「위임 장부」의 그 행에 실제 소요와 결과(통과 / 재작업 N)를 채운다. 통과하면 브리프 맨 아래에 `검수 <HH:MM> 통과 — verify PASS` 한 줄 → `git commit -m "review: <모듈> 통과"` — 커밋 트리거 4.
 4. 새 구조가 들어왔으면 사용자에게 3줄 브리핑하고, 약점이 보이면 `docs/QNA.md` 에 한 줄. PLAN 상태를 「완료」로.
+
+## 화면 모듈 브리프에 반드시 옮길 계약
+
+- 먼저 `guides/DESIGN.md`와 `starter/DOMAIN.md`를 읽는다. 구현할 탭에서 `command -v node; node --version`을 확인한다(오케 탭의 버전으로 대체 금지).
+- 새 화면 기본은 `bash starter/shadcn/make.sh <제품 폴더>`. 실패하면 오류를 보고하고 준비된 `starter/shell/`을 쓴다. 별도 HTML을 새로 만드는 우회는 하지 않는다. 과제 제공 앱이 있으면 기존 앱을 우선하고 선택 이유를 기록한다.
+- 생성된 App·라우팅·페이지·위젯을 먼저 읽고 유지한다. 도메인 설정·데이터 연결·필요한 기능만 수정한다. App.tsx를 삭제하고 전체 화면을 다시 쓰지 않는다. 기존 구조로 요구를 충족할 수 없으면 근거와 변경 범위를 먼저 오케에 보고한다.
+- 완료 조건: 실제 데이터 연결 + 빌드 통과 + Browser에서 `guides/img/shadcn-recipe-sk.png`와 기본 레이아웃 대조. 사용한 페이지·위젯과 바꾼 파일을 보고한다. 빌드 성공만으로 준비 UI 재사용을 충족 처리하지 않는다.
