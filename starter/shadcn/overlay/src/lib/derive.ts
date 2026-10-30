@@ -5,6 +5,7 @@
 import activeJson from '@/domain/active.json'
 import { DOMAIN_NAME_RE, makeCtx, type Ctx } from '@/domain/core.mjs'
 import { applyImported, importApi, importPrevApi, type ImportRecord } from '@/domain/import.mjs'
+import { loadSource } from '@/domain/source.mjs'
 
 export * from '@/domain/core.mjs'
 
@@ -22,12 +23,12 @@ function pickName(): string {
 
 export const domainName = pickName()
 // CSV 올리기로 반영한 데이터(/api/import-<도메인>)가 있으면 샘플의 rows 를 대신한다. domain.json 에 import 키가 있을 때만 읽고, 모듈이 불러질 때 한 번(top-level await) — 반영·되돌리기 뒤에는 화면을 다시 불러 온다.
-const domainJson = domainFiles[`../domain/${domainName}/domain.json`] as { import?: unknown }
+const domainJson = domainFiles[`../domain/${domainName}/domain.json`] as { import?: unknown; dataSource?: { url: string; label?: string } }
 export const baseSample = sampleFiles[`../domain/${domainName}/sample.json`] as { rows: unknown[] }
 const getRecord = (name: string): Promise<ImportRecord> => fetch(`/api/${name}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
-export const imported: ImportRecord = domainJson.import ? await getRecord(importApi(domainName)) : {}
-export const prevImported: ImportRecord = domainJson.import ? await getRecord(importPrevApi(domainName)) : {}
-const sampleData = applyImported(baseSample, imported)
+export const imported: ImportRecord = domainJson.import && !domainJson.dataSource ? await getRecord(importApi(domainName)) : {}
+export const prevImported: ImportRecord = domainJson.import && !domainJson.dataSource ? await getRecord(importPrevApi(domainName)) : {}
+const sampleData = await loadSource(domainJson, applyImported(baseSample, imported))
 export const ctx: Ctx = makeCtx(domainJson, sampleData)
 // 저장된 기준값(/api/settings-<도메인>)을 ctx 에 적용한다 — 가져온 데이터 위에 적용하고, ctx 객체를 그 자리에서 바꾸므로 이후 그려지는 모든 화면이 새 기준값으로 계산한다.
 export const applySettings = (values: Record<string, unknown>) => { Object.assign(ctx, makeCtx(domainJson, sampleData, values)) }

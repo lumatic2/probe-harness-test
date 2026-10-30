@@ -18,7 +18,7 @@ export const PAGE_META: Record<string, PageMeta> = {
 }
 
 // 도메인 설정에 해당 키가 있을 때만 켜지는 페이지 (schedule · review · assist · import · settings=params)
-const OPTIONAL: Record<string, boolean> = { schedule: !!ctx.d.schedule, review: !!ctx.d.review, assist: !!ctx.d.assist, import: !!ctx.d.import, settings: (ctx.d.params?.length ?? 0) > 0 }
+const OPTIONAL: Record<string, boolean> = { schedule: !!ctx.d.schedule, review: !!ctx.d.review, assist: !!ctx.d.assist, import: !!ctx.d.import && !ctx.d.dataSource, settings: (ctx.d.params?.length ?? 0) > 0 }
 export const isEnabled = (key: string) => !(key in OPTIONAL) || OPTIONAL[key]
 
 export const NAV: { title: string; pages: { key: string; icon: LucideIcon }[] }[] = [

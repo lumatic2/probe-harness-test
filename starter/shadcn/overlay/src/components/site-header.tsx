@@ -15,12 +15,12 @@ export function SiteHeader() {
   const row = route.page === 'item' ? findRow(ctx, route.id ?? '') : undefined
   const quiet = ['form', 'review', 'assist', 'schedule', 'import', 'settings'].includes(route.page) || (!!row && isDone(ctx, row))
   return (
-    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
-      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
+    <header className="flex min-h-(--header-height) md:h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+      <div className="flex w-full flex-wrap items-center gap-1 px-4 py-2 md:flex-nowrap md:py-0 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mx-2 data-[orientation=vertical]:h-4" />
         <h1 className="shrink-0 text-base font-medium">{meta.name}</h1>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
           <span className="hidden text-xs text-muted-foreground md:block">데이터 기준 {ctx.d.app.asOf}</span>
           <ChatSheet />
           <Button variant="outline" size="sm" asChild>

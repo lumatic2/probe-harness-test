@@ -3,6 +3,7 @@ import './print.css'
 import { AppSidebar } from '@/components/app-sidebar'
 import { FilterBar } from '@/components/page-parts'
 import { SiteHeader } from '@/components/site-header'
+import { DataState } from '@/components/data-state'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -41,7 +42,7 @@ function Shell() {
   useEffect(() => { document.title = ctx.d.app.title }, [])
   useEffect(() => { if (!Page) location.replace('#/dashboard') }, [Page])
   useEffect(() => { window.scrollTo(0, 0) }, [route.page, route.id])
-  if (!Page || !ready) return null
+  if (!Page || !ready) return <main className="px-4 py-16"><DataState kind="loading" /></main>
   const showFilter = !['item', 'form', 'schedule', 'review', 'assist', 'import', 'settings'].includes(route.page)
   return (
     <SidebarProvider style={{ '--sidebar-width': '16rem', '--header-height': '3.25rem' } as React.CSSProperties}>
@@ -50,7 +51,8 @@ function Shell() {
         <SiteHeader />
         <div className="@container/main flex flex-1 flex-col gap-4 py-4 md:gap-6 md:py-6" data-page={route.page} data-title={PAGE_META[route.page]?.name}>
           {showFilter ? <FilterBar /> : null}
-          <Page />
+          {ctx.d.dataSource ? <div className="flex items-center gap-3 px-4 text-sm text-muted-foreground lg:px-6"><span>{ctx.d.dataSource.label || '연결 데이터'} · {ctx.rows.length}건</span><button className="underline" onClick={() => location.reload()}>새로고침</button></div> : null}
+          {!ctx.rows.length && ['dashboard', 'list', 'report'].includes(route.page) ? <div className="px-4 lg:px-6"><DataState kind="empty" retry={() => location.reload()} /></div> : <Page />}
         </div>
       </SidebarInset>
       <Toaster position="bottom-right" />

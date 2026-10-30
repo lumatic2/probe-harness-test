@@ -114,7 +114,7 @@ function DragHandle({ id }: { id: string }) {
   )
 }
 
-// 인라인 편집 칸(숫자 열): 엔터 또는 포커스를 벗어나면 저장
+// 인라인 편집은 현재 표의 임시 미리보기. 서버 저장은 form의 saveDecision 계약을 사용한다.
 function InlineNumber({ row, field }: { row: Rw; field: string }) {
   const { update } = React.useContext(ActionsCtx)
   const id = rid(row)
@@ -122,7 +122,7 @@ function InlineNumber({ row, field }: { row: Rw; field: string }) {
     const v = Number(el.value)
     if (el.value.trim() === '' || !Number.isFinite(v) || v < 0) { el.value = String(row[field]); toast.error('0 이상의 숫자를 입력하세요'); return }
     if (v === row[field]) return
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 600)), { loading: `${id} 저장 중`, success: '저장됨', error: '저장 실패' })
+    toast('미리보기에 반영했습니다', { description: '새로고침하면 원래 값으로 돌아갑니다.' })
     update(id, { [field]: v })
   }
   return (
@@ -414,6 +414,7 @@ export function DataTable({ rows, sort }: { rows: Rw[]; sort?: Actions['sort'] }
 
   return (
     <ActionsCtx.Provider value={actions}>
+      <p className="px-4 text-xs text-muted-foreground lg:px-6" data-local-edit-note>표 안의 수정·추가·복제·삭제는 현재 화면의 미리보기입니다. 새로고침하면 초기화됩니다. 판정 기록은 입력·판정 화면에서 저장하세요.</p>
       <Tabs value={tab} onValueChange={changeTab} className="w-full flex-col justify-start gap-6" data-table>
         <div className="flex items-center justify-between px-4 lg:px-6">
           <Label htmlFor="view-selector" className="sr-only">보기</Label>
@@ -596,7 +597,7 @@ function RowDrawer({ item, onClose }: { item: Rw; onClose: () => void }) {
       } else patch[c.key] = draft[c.key].trim() || item[c.key]
     }
     update(rid(item), patch)
-    toast.success('저장됨', { description: rid(item) })
+    toast('미리보기에 반영했습니다', { description: `${rid(item)} · 새로고침하면 원래 값으로 돌아갑니다.` })
     onClose()
   }
   const meta = [R.owner && item[R.owner], R.group && `${item[R.group]}${d.group?.suffix ? ' ' + d.group.suffix : ''}`, R.date && `${colLabel(ctx, R.date)} ${shortTs(item[R.date])}`].filter(Boolean).join(' · ')
@@ -656,7 +657,7 @@ function RowDrawer({ item, onClose }: { item: Rw; onClose: () => void }) {
           </form>
         </div>
         <DrawerFooter>
-          <Button onClick={save}>저장</Button>
+          <Button onClick={save}>미리보기에 적용</Button>
           {item.__local ? null : <Button variant="outline" asChild><a href={`#/item/${rid(item)}`}>상세 열기</a></Button>}
           <DrawerClose asChild><Button variant="outline">닫기</Button></DrawerClose>
         </DrawerFooter>

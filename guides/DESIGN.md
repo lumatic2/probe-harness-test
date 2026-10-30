@@ -1,8 +1,8 @@
 # DESIGN.md — 결정 화면 디자인 규약
 
 > UI 코드를 쓰기 전에 읽는다. 산출물은 마케팅 페이지가 아니라 **실무자가 매일 여는 내부 운영 도구**다.
-> **화면 출발점(사용자 결정 10-29)**: 기본 = `bash starter/shadcn/make.sh` 로 세우는 shadcn 앱(페이지 6개 + 도메인 설정으로 켜는 3개(일정 격자 `#/schedule` · 문서 검토 `#/review` · AI 기능 `#/assist`) · 위젯 18종(W17 = AI 대화창, 헤더 버튼 옆 패널 · W18 = 녹음·전사) · SK 색 · 한국어, 약 1분). **npm 이 막히면** 예비 = `starter/shell/`(같은 페이지·위젯의 바닐라판, 설치 0분, 사용법 `starter/shell/README.md`). 사전 체험의 npm 확인 결과로 당일 아침에 정한다. 토큰 정본은 `vendor/skhynix/design.css` 하나 — 아래 「토큰」 블록은 규칙 설명용이고 앱 CSS 에 다시 정의하지 않는다(E1 의 선택자 충돌 원인).
-> **새 과제 데이터로 바꾸기**: 열·상태·지표·안내문은 `starter/domains/<이름>/domain.json` 한 곳에서 정하고 화면 코드는 그대로 둔다 — 순서는 `starter/DOMAIN.md`.
+> **화면 출발점(사용자 결정 10-29)**: 기본 = `bash starter/shadcn/make.sh` 로 세우는 shadcn 앱(페이지 6개 + 도메인 설정으로 켜는 5개(일정 격자 `#/schedule` · 문서 검토 `#/review` · AI 기능 `#/assist` · CSV 가져오기 `#/import` · 기준값 `#/settings`) · 위젯 18종(W17 = AI 대화창, 헤더 버튼 옆 패널 · W18 = 녹음·전사) · SK 색 · 한국어, 약 1분). **npm 이 막히면** 예비 = `starter/shell/`(같은 페이지·위젯의 바닐라판, 설치 0분, 사용법 `starter/shell/README.md`). 사전 체험의 npm 확인 결과로 당일 아침에 정한다. 토큰 정본은 `vendor/skhynix/design.css` 하나 — 아래 「토큰」 블록은 규칙 설명용이고 앱 CSS 에 다시 정의하지 않는다(E1 의 선택자 충돌 원인).
+> **새 과제 데이터로 바꾸기**: 열·상태·지표·안내문은 `starter/domains/<이름>/domain.json` 한 곳에서 정하고 화면 코드는 그대로 둔다 — 순서는 `starter/DOMAIN.md`. 화면 커버리지·실전 결과 연결·로딩/오류 상태는 `starter/shadcn/INTEGRATION.md`.
 > 목표는 "예쁘다"가 아니라 **30초 안에 오늘 뭘 할지 보인다** — 첫인상 게이트(JUDGE.md 실무자 관점)와 같은 기준.
 > 토큰은 리허설 1에서 실무자가 실제 수용한 화면에서 추출했다. 과제 도메인에 맞게 바꿔도 되지만, 규칙(§원칙·§금지)은 유지한다.
 
