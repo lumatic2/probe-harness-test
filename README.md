@@ -7,7 +7,7 @@
 1. 작업 공간은 사용자가 Codex를 연 폴더다. 클론 폴더는 `probe-harness-test/`. 기존 과제 README·데이터를 보존한다. 과제 README가 없을 때만 `cp -r probe-harness-test/sample-task/. .`로 견본을 먼저 옮긴다.
 2. 이 README를 작업 공간의 `docs/사전체험-진행.md`로 복사한다(클론 폴더는 setup이 삭제한다). `bash probe-harness-test/setup.sh`를 실행한다.
 3. `AGENTS.md`, `roles/오케.md`, `guides/CONTEST-BRIEF.md`를 읽되 체험의 단계·시간은 이 문서를 따른다. setup의 실제 설치·환경·과제 파일 보고는 전달하고, 출력된 실전 시간표는 체험에 적용하지 않는다.
-4. `docs/사전체험-결과.md`에 이미 확인한 환경과 다음 단계(재시작)를 기록한다. 종료 전 사용자에게 **`/quit` → 같은 폴더의 bash에서 `codex resume --last` → `계속`**을 안내한다. 여러 세션이 있으면 `codex resume`에서 오케를 고른다.
+4. `docs/사전체험-결과.md`에 이미 확인한 환경과 다음 단계(재시작)를 기록한다. 종료 전 사용자에게 **`/quit` → 같은 폴더의 bash에서 `codex 실행 후 /resume` → `계속`**을 안내한다. 여러 세션이 있으면 `/resume`에서 오케를 고른다.
 5. 돌아오면 이 진행 문서와 결과를 다시 읽고 남은 시간을 한 번 확인한다. 이어 아래 순서를 진행하고 매번 사용자가 할 조작 한 가지만 안내한다. AI가 직접 실행할 수 있는 검사는 직접 한다. UI 조작·DM 전송은 사용자가 한다.
 
 ## 자동 안내 순서
